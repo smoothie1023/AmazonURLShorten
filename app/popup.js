@@ -10,7 +10,7 @@ chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, tabs => {
   }
   if(dpendslash==-1){alert("dpのスラッシュ位置が取得できませんでした。")}
   var dp=url.substr(dppoint,dpendslash-dppoint);
-  
+
   var listener = function(e){
       e.clipboardData.setData("text/plain" , shortenURL+dp);
       // 本来のイベントをキャンセル
@@ -22,6 +22,9 @@ chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, tabs => {
   document.addEventListener("copy" , listener);
   // コピー
   document.execCommand("copy");
+  if(dppoint!=-1 && dpendslash!=-1){
+    document.write("URLをコピーしました");
+  }
 
 
 })
