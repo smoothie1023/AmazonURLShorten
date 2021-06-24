@@ -2,21 +2,23 @@ chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, tabs => {
   const url = tabs[0].url
   //省略するURLのホスト部分(https://.www.amazon.co.jp)
   var HeadURL=url.substr(0,25)
-  var dppoint=url.indexOf('dp',24);
+  var point=url.indexOf('dp',24);
   var middleURL="dp/"
-  if(dppoint==-1){
-    var dppoint=url.indexOf('gp',24);
-    if(dppoint!=-1){
+  var content=document.getElementById("content");
+  if(point==-1){
+    var point=url.indexOf('gp/product',24);
+    if(point!=-1){
       var middleURL="gp/product"
-      dppoint+=10
+      point+=10
     }
-  }else if(dppoint==-1){alert("dpの位置が取得できませんでした。")}
-  var dpendslash=url.indexOf('/',dppoint+3);
-  if(dpendslash==-1){
-    var dpendslash=url.indexOf('?',dppoint+3);
+    if(point==-1){content.innerHTML="dpまたはgpの位置が取得できませんでした。";}
   }
-  if(dpendslash==-1){alert("dpのスラッシュ位置が取得できませんでした。")}
-  var dp=url.substr(dppoint,dpendslash-dppoint);
+  var dpendslash=url.indexOf('/',point+3);
+  if(dpendslash==-1){
+    var dpendslash=url.indexOf('?',point+3);
+  }
+  if(dpendslash==-1){content.innerHTML="スラッシュ位置が取得できませんでした。";}
+  var dp=url.substr(point,dpendslash-point);
 
   var listener = function(e){
       e.clipboardData.setData("text/plain" , HeadURL+middleURL+dp);
@@ -29,9 +31,7 @@ chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, tabs => {
   document.addEventListener("copy" , listener);
   // コピー
   document.execCommand("copy");
-  if(dppoint!=-1 && dpendslash!=-1){
-    document.write("URLをコピーしました");
+  if(point!=-1 && dpendslash!=-1){
+    content.innerHTML="URLをコピーしました";
   }
-
-
 })
