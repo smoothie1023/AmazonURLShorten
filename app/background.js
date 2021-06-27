@@ -2,7 +2,8 @@ chrome.declarativeContent.onPageChanged.removeRules(undefined, function(){
   chrome.declarativeContent.onPageChanged.addRules([{
     conditions:[
       new chrome.declarativeContent.PageStateMatcher({
-        pageUrl:{hostEquals:'www.amazon.co.jp'},
+        pageUrl:{hostEquals:'www.amazon.co.jp',
+        schemes:['https']},
       })
     ],
     actions:[
